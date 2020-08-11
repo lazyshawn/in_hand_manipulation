@@ -33,7 +33,7 @@ PD control.
 
 ### Notes
 
-![RollerGrasper_prototype](./pics/RollerGrasper_prototype.png)
+![RollerGrasper_prototype](./pics/RollerGrasper_prototype.png =x200)
 ![Contact_motion_components](./pics/contact_motion_components.png =x200)
 
 * Non-anthropomorphic robot grasper with active surfaces at fingertips.
@@ -125,6 +125,75 @@ in a supervised approach (1) $\Rightarrow$
 update policy according to DAgger (regression instead of classification).
 $$L_j^i=\|\pi^0(s_j^i)-a_j^i\|_2,\forall s_j\in\vert\Gamma^i\vert,i\in N\tag{1}$$
 
+
+## Robust Planar Dynamic Pivoting by Regulating Inertial and Grip Force
+### Devices
+The wrist joint: Maxon RE-40 DC motor (with a 4.3:1 gearbox), 
+0.8Nm maximum continuous torque output.
+The grip force: Maxon RE-36 DC motor.
+Lever mechanism. Loadcell. Encoder.
+
+### Keywords
+**Uncertainty analysis** in coefficient matrix.
+Robust control. 
+
+### Note
+* Traditional approaches based on friction compensation
+do not work well for this problem, as we observe the trosional friciton
+at the contact has large uncertainties during pivoting.
+
+* Discontinuities of friction and the lower bound constraint on the grip force
+all make dynamic pivoting a challenging task for robots.
+
+* Propose a robust control strategy that directly uses friction
+as a key input for dynamic pivoting, 
+and show that active force control by regulating the grip force
+significantly improves system stability.
+
+* Embed a Lyapunov-based control law into a quadratic programming framework,
+which ensures real-time computational speed and the existence of a solution.
+
+* The contact brings three problems.
+**Modeling Uncertainty**: the grasped area, contact friction force modeling.
+A very detailed friction model is unnecessary. However, a closed-loop
+strategy is preferred.
+**Positive lower bound constraint** on grip force: 
+a traditional nonlinear controller often commands large negative grip force
+when trying to pull the system back from error.
+**Friction discontinuity**.
+
+* When the object is treated as an additional link of the robot
+with frictionless joint, 
+pivoting reduces to a passive last joint manipulator problem,
+where partial feedback linearization is shown to be successful.
+These approaches are extended in this paper in two ways.
+Firstly, we add a robust control term to the feedback linearization control law,
+so as to explicitly tackle the non-trivial, 
+uncertain contact friction and some amount of slip during pivoting.
+Secondly, we utilize the grip force as an additional source of control,
+which brings notable stability improvement as well as new difficulties
+in controller design.
+
+* Robust control and adaptive control techniques were used to 
+ensure convergence under friction uncertainty.
+
+* Pivoting is a typical example of nonprehensile manipulation,
+where the object is manipulated without a firm grasp.
+
+* In this work, we will stick to a static model while relying on
+hardware design to minimize unexpected dynamic frictional behavior.
+
+* A smaller contact area will result in a more flat limit surface,
+which makes rotation easier than slip.
+
+* There is a significant hysteresis nonlinearity in motor stall torque;
+hence we use a 5kg loadcell to provide grip force feedback,
+then close the loop with PI plus feed-forward controller.
+
+* There is a considerable amount of uncertainty in friction,
+which is a compound result of a simple friction model,
+non-perfect friction parameter estimation,
+and the noise in grip force control.
 
 
 
